@@ -5,7 +5,7 @@ In that page there us a button to request info to github API.
 
 We want following behavior:
 
-### Home page /
+## Home page /
 
 - include in / page a text input to ask github API the info of the user entered when button is clicked. For example, if we type 'addyosmani' and click button we should call https://api.github.com/users/addyosmani. Button should be disabled if there are less than 3 letters in textinput.
 - show a loading message or icon while request is being doing
@@ -15,7 +15,7 @@ We want following behavior:
   fakenamedoesnotexist 404
 - names in previous requests list have to be clickable, and when clicked have to navigate to another route /repositories
 
-### /repositories page
+## /repositories page
 
 - show a header with user info
 - back link to return to home /
