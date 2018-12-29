@@ -7,7 +7,9 @@ import { ThunkDispatch } from "redux-thunk";
 
 function mapStateToProps(state: IReduxState): StateProps {
   return {
-    users: state.users.users
+    users: state.users.users,
+    httpError: state.layout.httpError,
+    httpSuccess: state.layout.httpSuccess
   };
 }
 

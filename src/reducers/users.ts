@@ -1,8 +1,8 @@
-import { IRepositorie, IUser } from "interfaces";
-import { Action } from "../actions/users";
+import { ISaveUser } from "interfaces";
+import { UserAction, USER } from "../actions/users";
 
 export interface IReduxStateUsers {
-  users: Array<IUser>;
+  users: Array<ISaveUser>;
 }
 
 const INITIAL_STATE: IReduxStateUsers = {
@@ -11,9 +11,16 @@ const INITIAL_STATE: IReduxStateUsers = {
 
 export default function(
   state = INITIAL_STATE,
-  action: Action
+  action: UserAction
 ): IReduxStateUsers {
   switch (action.type) {
+    case 'SAVE_USER_REQUESTED':
+      state.users.push(action.payload)
+      return {
+        users: [
+          ...state.users
+        ]
+      }
     default:
       return state;
   }
