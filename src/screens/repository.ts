@@ -1,25 +1,23 @@
-import Home, { DispatchProps, StateProps } from "../components/organisms/Home";
-import { getUser, setUser } from "../actions/users";
+import Repository, { DispatchProps, StateProps } from "../components/organisms/Repository";
 import { IReduxState } from "../reducers";
 import { connect } from "react-redux";
 import { AnyAction, bindActionCreators } from "redux";
 import { ThunkDispatch } from "redux-thunk";
+import { getUserRepos } from "../actions/users";
 
 function mapStateToProps(state: IReduxState): StateProps {
   return {
-    users: state.users.users,
-    httpError: state.layout.httpError,
-    httpSuccess: state.layout.httpSuccess
+      user: state.users.user!
   };
 }
 
 function mapDispatchToProps(
   dispatch: ThunkDispatch<IReduxState, {}, AnyAction>
 ): DispatchProps {
-  return bindActionCreators({ getUser, setUser }, dispatch);
+  return bindActionCreators({ getUserRepos }, dispatch);
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Home);
+)(Repository);

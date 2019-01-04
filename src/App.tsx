@@ -5,8 +5,9 @@ import store from "./store";
 import Api from './api';
 import './App.css';
 import Spinner from "./components/spinner/spinner";
+import { ROOT_URL } from "./constants";
 
-new Api('/');
+new Api(ROOT_URL);
 
 export default function App() {
   return (

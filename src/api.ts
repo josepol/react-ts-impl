@@ -1,8 +1,7 @@
-import { IUser } from "interfaces";
+import { IUser, ISaveUser } from "interfaces";
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import Store from './store';
 import { displaySpinner, hideSpinner, handleHttpError, handleHttpSuccess } from './actions/layout';
-import { saveUserRequested } from './actions/users';
 
 export default class Api {
 
@@ -16,7 +15,6 @@ export default class Api {
       (response: AxiosResponse) => {
         this.dispatchHideSpinner();
         this.dispatchHttpSuccess();
-        this.dispatchSaveUserRequested(this.mapSavedUser(response));
         return new Promise(resolve => {
           return resolve(response);
         });
@@ -24,8 +22,8 @@ export default class Api {
       (err: AxiosError) => {
         console.log(err);
         this.dispatchHttpError();
-        return new Promise((resolve, reject) => {
-          return reject(err);
+        return new Promise((resolve) => {
+          return resolve(err);
         });
       }
     );
@@ -47,10 +45,6 @@ export default class Api {
     Store.dispatch(handleHttpSuccess());
   }
 
-  private dispatchSaveUserRequested(savedUser: any) {
-    Store.dispatch(saveUserRequested(savedUser));
-  }
-
   // --------------------------------------
   // Users
   // --------------------------------------
@@ -58,15 +52,22 @@ export default class Api {
   public async userGet(name: string): Promise<IUser> {
     this.dispatchDisplaySpinner();
     const res = await this.instance.get(`/users/${name}`);
-    if (res.status !== 200)
-      throw new Error(`Could not get user: response code: ${res.status}`);
-    return res.data;
+    if (res.status === 200) {
+      return {
+        ...res.data,
+        status: res.status
+      }
+    } else {
+      return {
+        login: name,
+        status: 404
+      } as IUser;
+    }
   }
 
-  private mapSavedUser(res: any) {
-    return {
-      name: res.data.login,
-      status: res.status
-    }
+  public async getUserRepos(name: string): Promise<Array<any>> {
+    this.dispatchDisplaySpinner();
+    const res = await this.instance.get(`/users/${name}/repos`);
+    return res.data;
   }
 }
